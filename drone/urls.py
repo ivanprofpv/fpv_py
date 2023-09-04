@@ -3,6 +3,6 @@ from django.urls import path
 from .views import *
 
 urlpatterns = [
-    path('', index),
+    path('', index, name='home'),
     path('drone/<int:droneid>/', show),
 ]
