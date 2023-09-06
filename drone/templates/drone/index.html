@@ -1,0 +1,11 @@
+{% extends 'drone/layout.html' %}
+
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block content %}
+    {% for p in post %}
+        <li><a href="{% url 'drone-detail' p.id %}">{{ p.title }}</a></li>
+    {% endfor%}
+{% endblock %}
