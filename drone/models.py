@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+
 
 class Drone(models.Model):
     title = models.CharField(max_length=255)
@@ -10,3 +12,7 @@ class Drone(models.Model):
 
     def __str__(self):
         return self.title
+
+    # формирует маршрут к конкретной записи
+    def get_absolute_url(self):
+        return reverse('drone', kwargs={'drone_id': self.pk})

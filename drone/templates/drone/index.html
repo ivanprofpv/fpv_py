@@ -6,6 +6,6 @@
 
 {% block content %}
     {% for p in post %}
-        <li><a href="{% url 'drone-detail' p.id %}">{{ p.title }}</a></li>
+        <li><a href="{{ p.get_absolute_url }}">{{ p.title|truncatewords:5 }}</a></li>
     {% endfor%}
 {% endblock %}

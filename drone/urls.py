@@ -4,5 +4,5 @@ from .views import *
 
 urlpatterns = [
     path('', index, name='home'),
-    path('drone/<int:pk>/', DroneDetailsView.as_view(), name='drone-detail'),
+    path('drone/<int:drone_id>/', show_post, name='drone'),
 ]
