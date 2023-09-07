@@ -1,4 +1,5 @@
 {% extends 'drone/layout.html' %}
+{% load static %}
 
 {% block title %}
     Главная страница
@@ -6,6 +7,18 @@
 
 {% block content %}
     {% for p in post %}
-        <li><a href="{{ p.get_absolute_url }}">{{ p.title|truncatewords:5 }}</a></li>
+        <div class="content">
+            <a href="{{ p.get_absolute_url }}">
+                 <div class="card border-0">
+                  <div class="image">
+                    <div class="content-overlay"></div>
+                      <img class="card-img-top rounded-0" alt="{{ p.title|truncatewords:5 }}" src="{% static 'drone/img/default.jpg' %}">
+                    <div class="content-details fadeIn-bottom">
+                      <h3 class="content-title">{{ p.title|truncatewords:5 }}</h3>
+                    </div>
+                  </div>
+                </div>
+            </a>
+        </div>
     {% endfor%}
 {% endblock %}

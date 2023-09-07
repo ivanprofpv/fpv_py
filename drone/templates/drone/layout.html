@@ -10,7 +10,40 @@
     <link type="text/css" href="{% static 'drone/css/style.css' %}" rel="stylesheet" />
 </head>
 <body>
-{% block content %}
-{% endblock %}
+  <div class="container">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary navbar-dark" style="background-color: #4474af">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">FPV</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Create drone build</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Category</a>
+            </li>
+              <li class="nav-item">
+                <a class="nav-link active" data-turbolinks="false" href="#">Log in</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link active" data-turbolinks="false" href="#">Sign up</a>
+              </li>
+          </ul>
+          <form class="d-flex" action="/search" accept-charset="UTF-8" method="get">
+      <input class="form-control me-2" type="search" placeholder="Search" name="query" id="query">
+      <input type="submit" name="commit" value="Search" class="btn btn-secondary" data-disable-with="Search">
+    </form>
+        </div>
+      </div>
+    </nav>
+    <br>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
 </body>
 </html>
