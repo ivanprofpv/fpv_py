@@ -6,19 +6,27 @@
 {% endblock %}
 
 {% block content %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <h3{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</h3>
+            {% endfor %}
+        </ul>
+    {% endif %}
     {% for p in post %}
-        <div class="content">
-            <a href="{{ p.get_absolute_url }}">
-                 <div class="card border-0">
-                  <div class="image">
+    <div class="content">
+        <a href="{{ p.get_absolute_url }}">
+            <div class="card border-0">
+                <div class="image">
                     <div class="content-overlay"></div>
-                      <img class="card-img-top rounded-0" alt="{{ p.title|truncatewords:5 }}" src="{% static 'drone/img/default.jpg' %}">
+                    <img class="card-img-top rounded-0" alt="{{ p.title|truncatewords:5 }}"
+                         src="{% static 'drone/img/default.jpg' %}">
                     <div class="content-details fadeIn-bottom">
-                      <h3 class="content-title">{{ p.title|truncatewords:5 }}</h3>
+                        <h3 class="content-title">{{ p.title|truncatewords:5 }}</h3>
                     </div>
-                  </div>
                 </div>
-            </a>
-        </div>
+            </div>
+        </a>
+    </div>
     {% endfor%}
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
+from django.contrib import messages
 
 from .models import *
 
@@ -22,6 +23,9 @@ def pageNotFound(request, exception):
 def show_category(request, category_id):
     category = Category.objects.all()
     post = Drone.objects.filter(category_id=category_id)
+
+    if len(post) == 0:
+        messages.info(request, 'Записи не найдены.')
 
     context = {
         'category': category,
