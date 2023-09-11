@@ -6,6 +6,7 @@ class DroneAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'category', 'time_create', 'drone_photo', 'is_published')
     list_display_links = ('id', 'title')
     search_fields = ('title', 'content')
+    list_editable = ('is_published',)
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
