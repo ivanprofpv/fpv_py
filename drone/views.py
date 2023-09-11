@@ -12,7 +12,6 @@ def index(request):
     post = Drone.objects.all()
     context = {
         'post': post,
-        'category_selected': 0,
     }
     return render(request, 'drone/index.html', context=context)
 def pageNotFound(request, exception):

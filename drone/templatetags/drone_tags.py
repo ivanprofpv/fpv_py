@@ -2,8 +2,7 @@ from django import template
 from drone.models import *
 
 register = template.Library()
-
-#simple_tag декоратор экземпляра класса Library
-@register.simple_tag()
-def get_categories():
-    return Category.objects.all()
+@register.inclusion_tag('drone/tags/list_categories.html')
+def show_categories(category_selected=0):
+    category = Category.objects.all()
+    return {"category": category, 'category_selected': category_selected}
