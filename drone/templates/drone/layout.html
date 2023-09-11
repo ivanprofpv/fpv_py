@@ -1,4 +1,5 @@
 {% load static %}
+{% load drone_tags %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -27,6 +28,7 @@
                 Category
               </a>
                 <ul class="dropdown-menu" data-bs-popper="static">
+                  {% get_categories as category %}
                   {% for c in category %}
                     {% if c.pk == category_selected %}
                   <li class="dropdown-item selected"><b>{{ c.name }}</b></li>
