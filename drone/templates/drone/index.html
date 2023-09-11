@@ -19,8 +19,12 @@
             <div class="card border-0">
                 <div class="image">
                     <div class="content-overlay"></div>
-                    <img class="card-img-top rounded-0" alt="{{ p.title|truncatewords:5 }}"
-                         src="{% static 'drone/img/default.jpg' %}">
+                    {% if p.drone_photo %}
+                        <img class="card-img-top rounded-0" alt="{{ p.title|truncatewords:5 }}" src="{{ p.drone_photo.url }}">
+                    {% else %}
+                        <img class="card-img-top rounded-0" alt="{{ p.title|truncatewords:5 }}"
+                            src="{% static 'drone/img/default.jpg' %}">
+                    {% endif %}
                     <div class="content-details fadeIn-bottom">
                         <h3 class="content-title">{{ p.title|truncatewords:5 }}</h3>
                     </div>
