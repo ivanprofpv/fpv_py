@@ -17,7 +17,7 @@ class Drone(models.Model):
 
     # формирует маршрут к конкретной записи
     def get_absolute_url(self):
-        return reverse('drone', kwargs={'drone_id': self.pk})
+        return reverse('drone', kwargs={'drone_slug': self.slug})
 
     #добавляем "-id" в конце url для уникальности
     def save(self):
@@ -39,13 +39,7 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('category', kwargs={'category_id': self.pk})
-
-    def save(self):
-        super(Category, self).save()
-        if not self.slug.endswith('-' + str(self.id)):
-            self.slug += '-' + str(self.id)
-            super(Category, self).save()
+        return reverse('category', kwargs={'category_slug': self.slug})
 
     class Meta:
         verbose_name = 'Категории'
