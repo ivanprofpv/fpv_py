@@ -1,12 +1,17 @@
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 
 from .models import *
 
 def show_post(request, drone_id):
-    show_drone = Drone.objects.get(id=drone_id)
-    return render(request, 'drone/details.html', {'post': show_drone})
+    post = get_object_or_404(Drone, pk=drone_id)
+    context = {
+        'post': post,
+        'title': post.title,
+        'content': post.content,
+    }
+    return render(request, 'drone/details.html', context=context)
 
 def index(request):
     post = Drone.objects.all()
