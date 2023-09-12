@@ -19,6 +19,13 @@ class Drone(models.Model):
     def get_absolute_url(self):
         return reverse('drone', kwargs={'drone_id': self.pk})
 
+    #добавляем "-id" в конце url для уникальности
+    def save(self):
+        super(Drone, self).save()
+        if not self.slug.endswith('-' + str(self.id)):
+            self.slug += '-' + str(self.id)
+            super(Drone, self).save()
+
     class Meta:
         verbose_name = 'Дроны'
         verbose_name_plural = 'Дроны'
@@ -34,7 +41,14 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('category', kwargs={'category_id': self.pk})
 
+    def save(self):
+        super(Category, self).save()
+        if not self.slug.endswith('-' + str(self.id)):
+            self.slug += '-' + str(self.id)
+            super(Category, self).save()
+
     class Meta:
         verbose_name = 'Категории'
         verbose_name_plural = 'Категории'
         ordering = ['id']
+
