@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 
 from .forms import AddDroneForm
@@ -38,9 +38,10 @@ def show_category(request, category_slug):
 
 def add_drone(request):
     if request.method == 'POST':
-        drone_form = AddDroneForm(request.POST)
-        if drone_form.is_valid():
-            drone_form.save()
+        form = AddDroneForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
     else:
-        drone_form = AddDroneForm()
-    return render(request, 'drone/add_drone.html', {'form': drone_form})
+        form = AddDroneForm()
+    return render(request, 'drone/add_drone.html', {'form': form, 'title': 'Создание сборки'})
