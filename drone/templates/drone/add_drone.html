@@ -5,11 +5,40 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{{ title }}</h2>
-    <br>
-    <form action="{% url 'add_drone' %}" method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Добавить</button>
-    </form>
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-12 col-md-9 col-lg-7 col-xl-9">
+        <div class="card-body p-5">
+            <h2 class="text-uppercase text-center mb-5">{{ title }}</h2>
+            <form action="{% url 'add_drone' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="titleInput" class="form-label">Заголовок</label>
+                    <input class="form-control" type="text"
+                            aria-label="titleInput" {{ form.title }}
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Текст</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" {{ form.content }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="formFileMultiple" class="form-label">Фотографии</label>
+                    <input class="form-control" type="file" id="formFileMultiple" multiple {{ form.drone_photo }}
+                </div>
+                <div class="mb-3">
+                    <label for="category" class="form-label">Выберите категорию</label>
+                    <select class="form-select form-select" aria-label="category" {{ form.category }}
+                </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked {{ form.is_published }}
+                    <label class="form-check-label" for="flexCheckChecked">Опубликовать сразу</label>
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-info btn-lg">Добавить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+

@@ -9,10 +9,12 @@ class AddDroneForm(forms.ModelForm):
         self.fields['category'].empty_label = 'Выберите категорию'
     class Meta:
         model = Drone
-        fields = ['title', 'slug', 'drone_photo', 'content', 'is_published', 'category']
+        fields = ['title', 'drone_photo', 'content', 'is_published', 'category']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-input'}),
-            'content': forms.Textarea(attrs={'cols': 60, 'rows': 10})
+            'slug': forms.TextInput(attrs={'class': 'form-input'}),
+            'content': forms.Textarea(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-select form-select-sm'})
         }
 
     def clean_title(self):

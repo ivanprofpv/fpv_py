@@ -1,7 +1,17 @@
 from django.db import models
+from django.template.defaultfilters import slugify as django_slugify
 from django.urls import reverse
 
+alphabet = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+            'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+            'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'shch', 'ы': 'i', 'э': 'e', 'ю': 'yu',
+            'я': 'ya'}
 
+def slugify(s):
+    """
+    Overriding django slugify that allows to use russian words as well.
+    """
+    return django_slugify(''.join(alphabet.get(w, w) for w in s.lower()))
 class Drone(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
@@ -22,6 +32,7 @@ class Drone(models.Model):
     #добавляем "-id" в конце url для уникальности
     def save(self):
         super(Drone, self).save()
+        self.slug = slugify(self.title)
         if not self.slug.endswith('-' + str(self.id)):
             self.slug += '-' + str(self.id)
             super(Drone, self).save()
