@@ -11,10 +11,11 @@ class AddDroneForm(forms.ModelForm):
         model = Drone
         fields = ['title', 'drone_photo', 'content', 'is_published', 'category']
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'form-input'}),
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
             'slug': forms.TextInput(attrs={'class': 'form-input'}),
             'content': forms.Textarea(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-select form-select-sm'})
+            'category': forms.Select(attrs={'class': 'form-select form-select'}),
+            'drone_photo': forms.ClearableFileInput(attrs={'class': 'form-control'})
         }
 
     def clean_title(self):
