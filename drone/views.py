@@ -1,5 +1,6 @@
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from .forms import AddDroneForm
@@ -51,12 +52,13 @@ class ShowPost(DetailView):
 def pageNotFound(request, exception):
     return HttpResponseNotFound('Заглушка - страница не найдена (404)')
 
-def add_drone(request):
-    if request.method == 'POST':
-        form = AddDroneForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-    else:
-        form = AddDroneForm()
-    return render(request, 'drone/add_drone.html', {'form': form, 'title': 'Создание сборки'})
+class CreatePost(CreateView):
+    form_class = AddDroneForm
+    template_name = 'drone/add_drone.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Создание сборки'
+
+        return context
