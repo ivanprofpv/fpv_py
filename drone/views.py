@@ -1,8 +1,6 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
-from django.template.context_processors import request
-from django.views.generic import ListView
-from django.contrib import messages
+from django.views.generic import ListView, DetailView, CreateView
 
 from .forms import AddDroneForm
 from .models import *
@@ -32,19 +30,23 @@ class DroneCategory(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Категория ' + str(context['post'][0].category) + ' | BuildFPV'
+        context['title'] = 'Категория ' + str(context['post'][0].category)
         context['category_selected'] = self.kwargs['category_slug'] #присваиваем значение текущей категории, переданной в url
 
         return context
 
-def show_post(request, drone_slug):
-    post = get_object_or_404(Drone, slug=drone_slug)
-    context = {
-        'post': post,
-        'title': post.title,
-        'content': post.content,
-    }
-    return render(request, 'drone/details.html', context=context)
+class ShowPost(DetailView):
+    model = Drone
+    template_name = 'drone/details.html'
+    slug_url_kwarg = 'drone_slug'
+    context_object_name = 'post'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = str(context['post'].title)
+        context['content'] = str(context['post'].content)
+
+        return context
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('Заглушка - страница не найдена (404)')
