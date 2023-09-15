@@ -1,5 +1,6 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
+from django.template.context_processors import request
 from django.views.generic import ListView
 from django.contrib import messages
 
@@ -20,6 +21,22 @@ class DroneHome(ListView):
     def get_queryset(self):
         return Drone.objects.filter(is_published=True)
 
+class DroneCategory(ListView):
+    model = Drone
+    template_name = 'drone/index.html'
+    context_object_name = 'post'
+    allow_empty = False
+
+    def get_queryset(self):
+        return Drone.objects.filter(category__slug=self.kwargs['category_slug'], is_published=True)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Категория ' + str(context['post'][0].category) + ' | BuildFPV'
+        context['category_selected'] = self.kwargs['category_slug'] #присваиваем значение текущей категории, переданной в url
+
+        return context
+
 def show_post(request, drone_slug):
     post = get_object_or_404(Drone, slug=drone_slug)
     context = {
@@ -31,19 +48,6 @@ def show_post(request, drone_slug):
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('Заглушка - страница не найдена (404)')
-
-def show_category(request, category_slug):
-    category = get_object_or_404(Category, slug=category_slug)
-    post = Drone.objects.filter(category=category)
-
-    if len(post) == 0:
-        messages.info(request, 'Записи не найдены.')
-
-    context = {
-        'post': post,
-        'category_selected': category_slug,
-    }
-    return render(request, 'drone/index.html', context=context)
 
 def add_drone(request):
     if request.method == 'POST':
