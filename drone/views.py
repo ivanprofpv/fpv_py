@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -52,10 +53,11 @@ class ShowPost(DataMixin, DetailView):
 def pageNotFound(request, exception):
     return HttpResponseNotFound('Заглушка - страница не найдена (404)')
 
-class CreatePost(DataMixin, CreateView):
+class CreatePost(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddDroneForm
     template_name = 'drone/add_drone.html'
     success_url = reverse_lazy('home')
+    login_url = reverse_lazy('login')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
