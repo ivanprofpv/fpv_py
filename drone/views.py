@@ -5,22 +5,22 @@ from django.views.generic import ListView, DetailView, CreateView
 
 from .forms import AddDroneForm
 from .models import *
+from .utils import *
 
-class DroneHome(ListView):
+class DroneHome(DataMixin, ListView):
     model = Drone
     template_name = 'drone/index.html'
     context_object_name = 'post'
-    extra_context = {'title': 'Главная страница'}
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Главная страница'
-        return context
+        c_def = self.get_user_context(title='Главная страница')
+        return dict(list(context.items()) + list(c_def.items()))
 
     def get_queryset(self):
         return Drone.objects.filter(is_published=True)
 
-class DroneCategory(ListView):
+class DroneCategory(DataMixin, ListView):
     model = Drone
     template_name = 'drone/index.html'
     context_object_name = 'post'
@@ -31,12 +31,12 @@ class DroneCategory(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Категория ' + str(context['post'][0].category)
+        c_def = self.get_user_context(title='Категория ' + str(context['post'][0].category))
         context['category_selected'] = self.kwargs['category_slug'] #присваиваем значение текущей категории, переданной в url
 
-        return context
+        return dict(list(context.items()) + list(c_def.items()))
 
-class ShowPost(DetailView):
+class ShowPost(DataMixin, DetailView):
     model = Drone
     template_name = 'drone/details.html'
     slug_url_kwarg = 'drone_slug'
@@ -44,21 +44,21 @@ class ShowPost(DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = str(context['post'].title)
-        context['content'] = str(context['post'].content)
+        c_def = self.get_user_context(title=context['post'].title)
+        context['content'] = context['post'].content
 
-        return context
+        return dict(list(context.items()) + list(c_def.items()))
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('Заглушка - страница не найдена (404)')
 
-class CreatePost(CreateView):
+class CreatePost(DataMixin, CreateView):
     form_class = AddDroneForm
     template_name = 'drone/add_drone.html'
     success_url = reverse_lazy('home')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['title'] = 'Создание сборки'
+        c_def = self.get_user_context(title='Создание сборки')
 
-        return context
+        return dict(list(context.items()) + list(c_def.items()))
