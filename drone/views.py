@@ -1,10 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
-from .forms import AddDroneForm
+from .forms import AddDroneForm, SignUpUserForm
 from .models import *
 from .utils import *
 
@@ -50,9 +50,6 @@ class ShowPost(DataMixin, DetailView):
 
         return dict(list(context.items()) + list(c_def.items()))
 
-def pageNotFound(request, exception):
-    return HttpResponseNotFound('Заглушка - страница не найдена (404)')
-
 class CreatePost(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddDroneForm
     template_name = 'drone/add_drone.html'
@@ -64,3 +61,20 @@ class CreatePost(LoginRequiredMixin, DataMixin, CreateView):
         c_def = self.get_user_context(title='Создание сборки')
 
         return dict(list(context.items()) + list(c_def.items()))
+
+class SignUpUser(DataMixin, CreateView):
+    form_class = SignUpUserForm
+    template_name = 'drone/signup.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Регистрация')
+
+        return dict(list(context.items()) + list(c_def.items()))
+
+def pageNotFound(request, exception):
+    return HttpResponseNotFound('Заглушка - страница не найдена (404)')
+
+def login(request):
+    return HttpResponse("заглушка")
