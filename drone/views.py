@@ -9,7 +9,6 @@ from .models import *
 from .utils import *
 
 class DroneHome(DataMixin, ListView):
-    paginate_by = 3
     model = Drone
     template_name = 'drone/index.html'
     context_object_name = 'post'
@@ -23,7 +22,6 @@ class DroneHome(DataMixin, ListView):
         return Drone.objects.filter(is_published=True)
 
 class DroneCategory(DataMixin, ListView):
-    paginate_by = 3
     model = Drone
     template_name = 'drone/index.html'
     context_object_name = 'post'
