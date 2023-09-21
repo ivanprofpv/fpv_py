@@ -22,24 +22,42 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             {% if user.is_authenticated %}
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'add_drone' %}">Create drone build</a>
+                <a class="nav-link active" aria-current="page" href="{% url 'add_drone' %}">Создать сборку</a>
               </li>
             {% endif %}
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true">
-                Category
+                Категории
               </a>
                 <ul class="dropdown-menu" data-bs-popper="static">
                   {% show_categories category_selected %}
                 </ul>
           </li>
 
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Аккаунт
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Профиль</a></li>
+                {% if user.is_superuser %}
+                  <li><a class="dropdown-item" href="/admin/">Админка</a></li>
+                {% endif %}
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Компоненты</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/logout">Выйти</a></li>
+              </ul>
+            </li>
+            {% else %}
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'login' %}">Log in</a>
+              <a class="nav-link active" href="{% url 'login' %}">Вход</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" href="{% url 'signup' %}">Sign up</a>
+              <a class="nav-link active" href="{% url 'signup' %}">Регистрация</a>
             </li>
+            {% endif %}
           </ul>
           <form class="d-flex" action="/search" accept-charset="UTF-8" method="get">
       <input class="form-control me-2" type="search" placeholder="Search" name="query" id="query">

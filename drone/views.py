@@ -1,11 +1,12 @@
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseNotFound, HttpResponse
-from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.views import LoginView
+from django.http import HttpResponseNotFound
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
-from .forms import AddDroneForm, SignUpUserForm
-from .models import *
+from .forms import AddDroneForm, SignUpUserForm, LoginUserForm
 from .utils import *
 
 class DroneHome(DataMixin, ListView):
@@ -73,8 +74,22 @@ class SignUpUser(DataMixin, CreateView):
 
         return dict(list(context.items()) + list(c_def.items()))
 
+class LoginUser(DataMixin, LoginView):
+    form_class = LoginUserForm
+    template_name = 'drone/login.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Авторизация')
+
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_success_url(self):
+        return reverse_lazy('home')
+
 def pageNotFound(request, exception):
     return HttpResponseNotFound('Заглушка - страница не найдена (404)')
 
-def login(request):
-    return HttpResponse("заглушка")
+def logout_user(request):
+    logout(request)
+    return redirect('login')

@@ -1,0 +1,41 @@
+{% extends 'drone/layout.html' %}
+{% load static %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block content %}
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-12 col-md-9 col-lg-7 col-xl-9">
+        <div class="card-body p-5">
+            <h2 class="text-uppercase text-center mb-5">{{ title }}</h2>
+            <form method="post">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ form.non_field_errors }}
+                        </div>
+                    {% endif %}
+                {% for f in form %}
+                    {% if f.errors %}
+                        <div class="alert alert-danger">
+                            {{ f.errors }}
+                        </div>
+                    {% endif %}
+                    <div class="mb-3">
+                        <label for="{{ f.id_for_label }}" class="form-label">{{ f.label }}</label>
+                            {{ f }}
+                    </div>
+                {% endfor %}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-info btn-lg">Войти</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}
