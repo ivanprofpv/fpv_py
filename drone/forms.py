@@ -23,14 +23,14 @@ class AddDroneForm(forms.ModelForm):
     def clean_title(self):
         title = self.cleaned_data['title']
         if len(title) > 200:
-            raise ValidationError('Длина превышает 200 символов!')
+            raise ValidationError('Длина превышает 200 символов.')
 
         return title
 
     def clean_content(self):
         content = self.cleaned_data['content']
         if len(content) > 50000:
-            raise ValidationError('Длина превышает 50000 символов!')
+            raise ValidationError('Длина превышает 50000 символов.')
 
         return content
 
@@ -47,7 +47,15 @@ class SignUpUserForm(UserCreationForm):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError('Пользователь с таким email уже существует.')
+
         return email
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if len(username) > 30:
+            raise ValidationError('Максимальная длина имени пользователя - 30 символов.')
+
+        return username
 
 class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={'class': 'form-control'}))
