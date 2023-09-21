@@ -1,4 +1,4 @@
-from django.contrib.auth import logout
+from django.contrib.auth import logout, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.http import HttpResponseNotFound
@@ -73,6 +73,12 @@ class SignUpUser(DataMixin, CreateView):
         c_def = self.get_user_context(title='Регистрация')
 
         return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+
+        return redirect('home')
 
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
