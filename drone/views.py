@@ -29,7 +29,7 @@ class DroneCategory(DataMixin, ListView):
     allow_empty = False
 
     def get_queryset(self):
-        return Drone.objects.filter(category__slug=self.kwargs['category_slug'], is_published=True)
+        return Drone.objects.filter(category__slug=self.kwargs['category_slug'], is_published=True).select_related('category')
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
