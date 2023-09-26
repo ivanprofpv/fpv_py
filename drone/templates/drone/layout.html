@@ -11,12 +11,7 @@
     <link type="text/css" href="{% static 'drone/css/style.css' %}" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/44807de2b9.js" crossorigin="anonymous"></script>
   <script type="text/javascript" src={% static "drone/js/password.js" %}></script>
-  <script src="https://cdn.tiny.cloud/1/1sex0bpzlx8cnbj13k7n9w62ljdnkkozbxbqhyutzsnannrt/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-  <script>
-      tinymce.init({
-        selector: '#content'
-      });
-  </script>
+  {{ form.media }}
 </head>
 <body>
   <div class="container">

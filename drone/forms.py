@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from tinymce.widgets import TinyMCE
 
 from .models import *
 
@@ -15,10 +16,11 @@ class AddDroneForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'slug': forms.TextInput(attrs={'class': 'form-input'}),
-            'content': forms.Textarea(attrs={'class': 'form-control'}),
+            'content': TinyMCE(attrs={'class': 'form-control'}),
             'category': forms.Select(attrs={'class': 'form-select form-select'}),
             'drone_photo': forms.ClearableFileInput(attrs={'class': 'form-control'})
         }
+
 
     def clean_title(self):
         title = self.cleaned_data['title']

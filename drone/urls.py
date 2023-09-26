@@ -1,6 +1,6 @@
 
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import path, include
 
 from buildfpv import settings
 from .views import *
@@ -14,4 +14,5 @@ urlpatterns = [
     path('login/', LoginUser.as_view(), name='login'),
     path('logout/', logout_user, name='logout'),
     path('signup/', SignUpUser.as_view(), name='signup'),
+    path('tinymce/', include('tinymce.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

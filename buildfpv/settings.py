@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap5',
+    'tinymce',
     'debug_toolbar',
     'drone.apps.DroneConfig',
 ]
@@ -141,5 +142,9 @@ INTERNAL_IPS = [
 #     }
 # }
 
-TINYMCE_JS_URL = 'https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js'
-TINYMCE_COMPRESSOR = False
+TINYMCE_JS_URL = os.path.join(STATIC_URL, 'tinymce/tinymce.min.js')
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': 'advlist autolink lists link image charmap print preview anchor',
+    'toolbar': 'undo redo | bold italic | alignleft aligncenter alignright | code',
+    'height': 500,
+}
