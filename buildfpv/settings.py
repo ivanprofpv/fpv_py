@@ -30,7 +30,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap5',
-    'tinymce',
+    'ckeditor',
+    'ckeditor_uploader',
     'debug_toolbar',
     'drone.apps.DroneConfig',
 ]
@@ -142,9 +143,56 @@ INTERNAL_IPS = [
 #     }
 # }
 
-TINYMCE_JS_URL = os.path.join(STATIC_URL, 'tinymce/tinymce.min.js')
-TINYMCE_DEFAULT_CONFIG = {
-    'plugins': 'advlist autolink lists link image charmap print preview anchor',
-    'toolbar': 'undo redo | bold italic | alignleft aligncenter alignright | code',
-    'height': 500,
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+CKEDITOR_UPLOAD_PATH = "media/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 300,
+    },
+}
+CKEDITOR_CONFIGS = {
+    'default': {
+        'width': '100%',
+        'height': 600,
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            [
+                'Bold',
+                'Italic',
+                'Underline'
+            ],
+            [
+                'Font',
+                'FontSize',
+                'TextColor',
+                'BGColor'
+            ],
+            [
+                'NumberedList',
+                'BulletedList',
+                '-',
+                'Outdent',
+                'Indent',
+                '-',
+                'JustifyLeft',
+                'JustifyCenter',
+                'JustifyRight',
+                'JustifyBlock'
+            ],
+            [
+                'Link',
+                'Unlink'
+            ],
+            [
+                'RemoveFormat',
+                'Source',
+                'CodeSnippet',
+                'Image',
+            ]
+        ],
+
+    },
+
 }

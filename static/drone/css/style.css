@@ -1,0 +1,12 @@
+.navigate {
+  display: flex;
+  justify-content: center;
+}
+
+ul.errorlist {
+    margin-bottom: 0rem
+}
+
+.btn-info {
+  color: #f7f7f7;
+}
