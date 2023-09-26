@@ -62,7 +62,7 @@ class ComponentCategory(models.Model):
     slug = models.SlugField(max_length=100, unique=True, db_index=True, verbose_name='URL')
 
     def __str__(self):
-        return self.name
+        return self.title
 
     def get_absolute_url(self):
         return reverse('component_category', kwargs={'component_category_slug': self.slug})
