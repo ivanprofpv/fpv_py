@@ -34,6 +34,22 @@ class AddDroneForm(forms.ModelForm):
 
         return content
 
+class AddComponentCategoryForm(forms.ModelForm):
+    class Meta:
+        model = ComponentCategory
+        fields = ['title']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'slug': forms.TextInput(attrs={'class': 'form-input'}),
+        }
+
+    def clean_title(self):
+        title = self.cleaned_data['title']
+        if len(title) > 100:
+            raise ValidationError('Длина превышает 100 символов.')
+
+        return title
+
 class SignUpUserForm(UserCreationForm):
     username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))
