@@ -8,4 +8,12 @@
     <h2>{{ title }}</h2>
     <br>
     {{ content|safe }}
+
+<h3>Компоненты</h3>
+
+  <ul>
+    {% for component in components %}
+    <li>{{ component.name }} - {{ component.url }} -- {{ component.price }} (drone {{ component.drone }})</li>
+  {% endfor %}
+  </ul>
 {% endblock %}

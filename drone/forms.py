@@ -2,9 +2,25 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.forms import inlineformset_factory
 from tinymce.widgets import TinyMCE
 
 from .models import *
+
+class AddComponentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['component_category'].empty_label = 'Выберите компонент'
+    class Meta:
+        model = Component
+        fields = ['component_category', 'name', 'url', 'price']
+        widgets = {
+            'drone': forms.HiddenInput(),
+            'component_category': forms.Select(attrs={'class': 'form-select form-select'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'url': forms.TextInput(attrs={'class': 'form-input'}),
+            'price': forms.NumberInput(attrs={'class': 'form-input'}),
+        }
 
 class AddDroneForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -20,7 +36,6 @@ class AddDroneForm(forms.ModelForm):
             'category': forms.Select(attrs={'class': 'form-select form-select'}),
             'drone_photo': forms.ClearableFileInput(attrs={'class': 'form-control'})
         }
-
 
     def clean_title(self):
         title = self.cleaned_data['title']

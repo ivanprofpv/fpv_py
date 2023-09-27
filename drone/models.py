@@ -72,13 +72,12 @@ class ComponentCategory(models.Model):
         verbose_name_plural = 'Категории компонентов'
         ordering = ['id']
 
-
 class Component(models.Model):
     name = models.CharField(max_length=255, db_index=True, blank=True, verbose_name='Название')
     url = models.CharField(max_length=255, blank=True, verbose_name='Ссылка')
     price = models.IntegerField(blank=True, verbose_name='Цена')
-    drone_key = models.ForeignKey('Drone', on_delete=models.PROTECT, null=True)
-    component_category_key = models.ForeignKey('ComponentCategory', on_delete=models.PROTECT, null=True)
+    drone = models.ForeignKey('Drone', on_delete=models.PROTECT, null=True)
+    component_category = models.ForeignKey('ComponentCategory', on_delete=models.PROTECT, null=True)
 
     def __str__(self):
         return self.name
