@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-from django.forms import inlineformset_factory
 from tinymce.widgets import TinyMCE
 
 from .models import *
@@ -17,15 +16,15 @@ class AddComponentForm(forms.ModelForm):
         widgets = {
             'drone': forms.HiddenInput(),
             'component_category': forms.Select(attrs={'class': 'form-select form-select'}),
-            'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'url': forms.TextInput(attrs={'class': 'form-input'}),
-            'price': forms.NumberInput(attrs={'class': 'form-input'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Название компонента'}),
+            'url': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ссылка'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Цена'}),
         }
 
 class AddDroneForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['category'].empty_label = 'Выберите категорию'
+        self.fields['category'].empty_label = 'Выберите категорию дрона'
     class Meta:
         model = Drone
         fields = ['title', 'drone_photo', 'content', 'is_published', 'category']

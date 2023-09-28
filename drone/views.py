@@ -53,10 +53,6 @@ class ShowPost(DataMixin, DetailView):
         c_def = self.get_user_context(title=context['post'].title)
         context['content'] = context['post'].content
 
-        # Создание экземпляра формы
-        form = AddDroneForm()
-        context['form'] = form
-
         # Получение компонентов для текущего поста
         components = Component.objects.filter(drone=context['post'])
         context['components'] = components

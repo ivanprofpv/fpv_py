@@ -24,15 +24,28 @@
                     {{ form.drone_photo }}
                 </div>
                 <div class="mb-3">
-                    <label for="category" class="form-label">Выберите категорию</label>
                      {{ form.category }}
                 </div>
 
-
-                {{ components.management_form }}
-                  {% for form in components %}
-                    {{ form.as_table }}
-                  {% endfor %}
+                <div class="form_components mb-3">
+                    {{ components.management_form }}
+                    {% for form in components %}
+                    <div class="row g-3">
+                        <div class="col-auto">
+                            {{ form.component_category }}
+                        </div>
+                    <div class="col-sm-5">
+                        {{ form.name }}
+                    </div>
+                    <div class="col-sm">
+                        {{ form.url }}
+                    </div>
+                    <div class="col-sm">
+                        {{ form.price }}
+                    </div>
+                    {% endfor %}
+                    </div>
+                </div>
 
                 <div class="form-check mb-3">
                     <input type="checkbox" class="form-check-input" id="{{ form.is_published.id_for_label }}" name="{{ form.is_published.name }}" {% if form.is_published.value %} checked {% endif %}>
