@@ -1,3 +1,5 @@
+from django.db.models import Sum
+
 from .models import *
 
 class DataMixin:
@@ -7,3 +9,7 @@ class DataMixin:
         category = Category.objects.all()
         context['category'] = category
         return context
+
+    def calculate_price(self, drone):
+        total_price = Component.objects.filter(drone=drone).aggregate(total_price=Sum('price'))['total_price']
+        return total_price

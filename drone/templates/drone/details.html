@@ -1,19 +1,51 @@
 {% extends 'drone/layout.html' %}
+{% load static %}
 
 {% block title %}
     {{ title }}
 {% endblock %}
 
 {% block content %}
-    <h2>{{ title }}</h2>
+<div class="article">
+        <h1 class="title">{{ title }}</h1>
+        {% if drone_photo %}
+            <img class="featured-image" src="{{ drone_photo.url }}" alt="{{ title }}">
+        {% else %}
+            <img class="featured-image" src="{% static 'drone/img/default.jpg' %}" alt="{{ title }}">
+        {% endif %}
+        <div class="content">{{ content | safe }}</div>
     <br>
-    {{ content|safe }}
-
-<h3>Компоненты</h3>
-
+    <h3>Компоненты</h3>
+        <table class="table table-hover">
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col">Название</th>
+            <th scope="col">Url</th>
+            <th scope="col">Цена</th>
+          </tr>
+        </thead>
+          {% for component in components %}
+          <tbody>
+              <tr>
+                <th scope="row">{{ component.component_category.title }}</th>
+                <td>{{ component.name }}</td>
+                {% if component.url %}
+                  <td><a href="{{ component.url }}" target="_blank">посмотреть</a></td>
+                {% else %}
+                  <td>-</td>
+                {% endif %}
+                {% if component.price %}
+                  <td>{{ component.price }}</td>
+                {% else %}
+                  <td>-</td>
+                {% endif %}
+              </tr>
+          {% endfor %}
+          </tbody>
+          <caption><b>Общая цена: {{ total_price }}</b></caption>
+        </table>
+    </div>
   <ul>
-    {% for component in components %}
-    <li>{{ component.name }} - {{ component.url }} -- {{ component.price }} (drone {{ component.drone }})</li>
-  {% endfor %}
   </ul>
 {% endblock %}
