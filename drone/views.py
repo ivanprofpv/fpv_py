@@ -11,8 +11,6 @@ from .forms import AddDroneForm, SignUpUserForm, LoginUserForm, AddComponentCate
     AddComponentForm
 from .utils import *
 
-ComponentFormset = inlineformset_factory(Drone, Component, form=AddComponentForm, extra=1)
-
 class DroneHome(DataMixin, ListView):
     model = Drone
     template_name = 'drone/index.html'
@@ -67,6 +65,7 @@ class CreatePost(LoginRequiredMixin, DataMixin, CreateView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
+        ComponentFormset = inlineformset_factory(Drone, Component, form=AddComponentForm, extra=3)
         if self.request.POST:
             context['components'] = ComponentFormset(self.request.POST)  # Создание формсета Component
         else:

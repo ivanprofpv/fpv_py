@@ -73,7 +73,7 @@ class ComponentCategory(models.Model):
         ordering = ['id']
 
 class Component(models.Model):
-    name = models.CharField(max_length=255, db_index=True, blank=True, verbose_name='Название')
+    name = models.CharField(max_length=100, db_index=True, blank=True, verbose_name='Название')
     url = models.CharField(max_length=255, blank=True, verbose_name='Ссылка')
     price = models.IntegerField(blank=True, verbose_name='Цена')
     drone = models.ForeignKey('Drone', on_delete=models.PROTECT, null=True)

@@ -21,6 +21,13 @@ class AddComponentForm(forms.ModelForm):
             'price': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Цена'}),
         }
 
+    def clean_name(self):
+        name = self.cleaned_data['name']
+        if len(name) > 100:
+            raise ValidationError('Максимальная длина названия не должна превышать 100 символов.')
+
+        return name
+
 class AddDroneForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -39,14 +46,14 @@ class AddDroneForm(forms.ModelForm):
     def clean_title(self):
         title = self.cleaned_data['title']
         if len(title) > 200:
-            raise ValidationError('Длина превышает 200 символов.')
+            raise ValidationError('Максимальная длина заголовка не должна превышать 200 символов.')
 
         return title
 
     def clean_content(self):
         content = self.cleaned_data['content']
         if len(content) > 50000:
-            raise ValidationError('Длина превышает 50000 символов.')
+            raise ValidationError('Длина статьи превышает 50000 символов.')
 
         return content
 
@@ -62,7 +69,7 @@ class AddComponentCategoryForm(forms.ModelForm):
     def clean_title(self):
         title = self.cleaned_data['title']
         if len(title) > 100:
-            raise ValidationError('Длина превышает 100 символов.')
+            raise ValidationError('Длина названия превышает 100 символов.')
 
         return title
 

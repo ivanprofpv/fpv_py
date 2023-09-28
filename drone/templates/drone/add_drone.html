@@ -10,6 +10,13 @@
         <div class="card-body p-5">
             <h2 class="text-uppercase text-center mb-5">{{ title }}</h2>
             <form action="{% url 'add_drone' %}" method="post" enctype="multipart/form-data">
+                 {% for f in form %}
+                    {% if f.errors %}
+                        <div class="alert alert-danger">
+                            {{ f.errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="titleInput" class="form-label">Заголовок</label>
@@ -20,7 +27,7 @@
                     {{ form.content }}
                 </div>
                 <div class="mb-3">
-                    <label for="formFileMultiple" class="form-label">Фотографии</label>
+                    <label for="formFileMultiple" class="form-label">Фотография</label>
                     {{ form.drone_photo }}
                 </div>
                 <div class="mb-3">
@@ -28,9 +35,9 @@
                 </div>
 
                 <div class="form_components mb-3">
+                    <div class="row g-3">
                     {{ components.management_form }}
                     {% for form in components %}
-                    <div class="row g-3">
                         <div class="col-auto">
                             {{ form.component_category }}
                         </div>
