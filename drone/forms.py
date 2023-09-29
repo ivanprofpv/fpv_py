@@ -73,6 +73,21 @@ class AddComponentCategoryForm(forms.ModelForm):
 
         return title
 
+class AddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+    def clean_content(self):
+        content = self.cleaned_data['content']
+        if len(content) > 255:
+            raise ValidationError('Длина комментария превышает 255 символов.')
+
+        return content
+
 class SignUpUserForm(UserCreationForm):
     username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={'class': 'form-control'}))
     email = forms.CharField(label='Email', widget=forms.EmailInput(attrs={'class': 'form-control'}))

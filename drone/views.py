@@ -8,7 +8,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from .forms import AddDroneForm, SignUpUserForm, LoginUserForm, AddComponentCategoryForm, \
-    AddComponentForm
+    AddComponentForm, AddCommentForm
 from .utils import *
 
 class DroneHome(DataMixin, ListView):
@@ -59,7 +59,33 @@ class ShowPost(DataMixin, DetailView):
         components = Component.objects.filter(drone=context['post'])
         context['components'] = components
 
+        # Передаем форму комментариев
+        form = AddCommentForm()
+        context['form'] = form
+
+        # Получаем комментарии
+        comments = Comment.objects.filter(drone=context['post'], is_published=True)
+        context['comments'] = comments
+
         return dict(list(context.items()) + list(c_def.items()))
+
+    def post(self, request, *args, **kwargs):
+        drone = self.get_object()
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            if request.user.is_authenticated:
+                comment.author = request.user
+                comment.drone = drone
+                comment.save()
+                print("Комментарий успешно сохранен:", comment.content, "id дрона:", comment.drone)  # Отладочный вывод
+                return redirect('drone', drone_slug=drone.slug)
+            else:
+                return redirect('login')
+        else:
+            print("Неверная форма комментария:", form.errors)  # Отладочный вывод
+        return self.render_to_response(self.get_context_data(form=form))
+
 
 class CreatePost(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddDroneForm

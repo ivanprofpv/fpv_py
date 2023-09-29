@@ -22,6 +22,13 @@ class ComponentCategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
     prepopulated_fields = {'slug': ('title',)}
 
+class CommentCategoryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'content', 'drone', 'author', 'is_published')
+    list_display_links = ('id', 'content')
+    search_fields = ('content',)
+    list_editable = ('is_published',)
+
 admin.site.register(Drone, DroneAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(ComponentCategory, ComponentCategoryAdmin)
+admin.site.register(Comment, CommentCategoryAdmin)

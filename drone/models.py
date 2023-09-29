@@ -1,6 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 from django.template.defaultfilters import slugify as django_slugify
 from django.urls import reverse
+
+User=get_user_model()
 
 alphabet = {'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
             'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
@@ -13,6 +16,7 @@ def slugify(s):
     """
     return django_slugify(''.join(alphabet.get(w, w) for w in s.lower()))
 class Drone(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     content = models.TextField(blank=False, verbose_name='Текст статьи')
@@ -81,3 +85,18 @@ class Component(models.Model):
 
     def __str__(self):
         return self.name
+
+class Comment(models.Model):
+    content = models.CharField(max_length=255, verbose_name='Комментарий')
+    created_on = models.DateTimeField(auto_now_add=True)
+    is_published = models.BooleanField(default=False, verbose_name='Публикация')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    drone = models.ForeignKey(Drone, on_delete=models.CASCADE, related_name='comments', null=True)
+
+    def __str__(self):
+        return 'Комментарий: {} от: {}, пост: {}'.format(self.content, self.author, self.drone)
+
+    class Meta:
+        verbose_name = 'Комментарии'
+        verbose_name_plural = 'Комментарии'
+        ordering = ['created_on']

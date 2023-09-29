@@ -48,4 +48,24 @@
     </div>
   <ul>
   </ul>
+<br>
+<!-- Форма создания комментария -->
+<h3>Create Comment</h3>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+<!-- Отображение комментариев -->
+<!-- Debug output -->
+{{ form.errors }}
+{% for comment in comments %}
+    <p>{{ comment.content }}</p>
+    <p>Автор: {{ comment.author }}</p>
+    <p>Статус публикации: {{ comment.is_published }}</p>  <!-- Debug -->
+    <hr>
+{% empty %}
+    <p>Нет комментариев.</p>
+{% endfor %}
 {% endblock %}
