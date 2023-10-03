@@ -11,6 +11,10 @@ from .forms import AddDroneForm, SignUpUserForm, LoginUserForm, AddComponentCate
     AddComponentForm, AddCommentForm
 from .utils import *
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 class DroneHome(DataMixin, ListView):
     model = Drone
     template_name = 'drone/index.html'
@@ -78,12 +82,9 @@ class ShowPost(DataMixin, DetailView):
                 comment.author = request.user
                 comment.drone = drone
                 comment.save()
-                print("Комментарий успешно сохранен:", comment.content, "id дрона:", comment.drone)  # Отладочный вывод
                 return redirect('drone', drone_slug=drone.slug)
             else:
                 return redirect('login')
-        else:
-            print("Неверная форма комментария:", form.errors)  # Отладочный вывод
         return self.render_to_response(self.get_context_data(form=form))
 
 

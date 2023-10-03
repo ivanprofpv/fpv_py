@@ -78,7 +78,7 @@ class AddCommentForm(forms.ModelForm):
         model = Comment
         fields = ['content']
         widgets = {
-            'content': forms.TextInput(attrs={'class': 'form-control'}),
+            'content': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Напишите комментарий'}),
         }
 
     def clean_content(self):

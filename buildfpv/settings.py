@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import os
+import logging
 
 from pathlib import Path
 load_dotenv()
@@ -148,3 +149,24 @@ TINYMCE_DEFAULT_CONFIG = {
     'toolbar': 'undo redo | bold italic | alignleft aligncenter alignright | code',
     'height': 500,
 }
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'root': {
+#         'handlers': ['console'],
+#         'level': 'DEBUG',  # Уровень логирования (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': True,
+#         },
+#     },
+# }

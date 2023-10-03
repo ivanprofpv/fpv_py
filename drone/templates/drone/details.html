@@ -8,8 +8,8 @@
 {% block content %}
 <div class="article">
         <h1 class="title">{{ title }}</h1>
-        {% if drone_photo %}
-            <img class="featured-image" src="{{ drone_photo.url }}" alt="{{ title }}">
+        {% if post.drone_photo %}
+            <img class="featured-image" src="{{ post.drone_photo.url }}" alt="{{ title }}">
         {% else %}
             <img class="featured-image" src="{% static 'drone/img/default.jpg' %}" alt="{{ title }}">
         {% endif %}
@@ -50,22 +50,35 @@
   </ul>
 <br>
 <!-- Форма создания комментария -->
-<h3>Create Comment</h3>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-
-<!-- Отображение комментариев -->
-<!-- Debug output -->
+{% if user.is_authenticated %}
+    <form method="post">
+      <div class="form-floating">
+          {% csrf_token %}
+          {{ form.as_p }}
+        <div class="float-start">
+            <button type="submit" class="btn btn-info btn-sm">Отправить</button>
+        </div>
+      </div>
+    </form>
+{% endif %}
+<br><br><br>
 {{ form.errors }}
 {% for comment in comments %}
-    <p>{{ comment.content }}</p>
-    <p>Автор: {{ comment.author }}</p>
-    <p>Статус публикации: {{ comment.is_published }}</p>  <!-- Debug -->
-    <hr>
-{% empty %}
-    <p>Нет комментариев.</p>
+    <div class="card">
+        <div class="card-body">
+          <div class="d-flex flex-start align-items-center">
+            <img class="rounded-circle shadow-1-strong me-3"
+              src="{% static 'drone/img/avatar.webp' %}" alt="avatar" width="60"
+              height="60" />
+            <div>
+            <h6 class="fw-bold text-primary mb-1">{{ comment.author }}</h6>
+            </div>
+          </div>
+          <p class="mt-1">
+            {{ comment.content }}
+          </p>
+        </div>
+    </div>
+    <br>
 {% endfor %}
 {% endblock %}
