@@ -3,6 +3,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 
 from buildfpv import settings
+from . import views
 from .views import *
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('signup/', SignUpUser.as_view(), name='signup'),
     path('tinymce/', include('tinymce.urls')),
+    path('like/<slug:slug>/', views.DroneLike, name="drone_like"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

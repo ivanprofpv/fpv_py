@@ -25,6 +25,7 @@ class Drone(models.Model):
     time_update = models.DateTimeField(auto_now=True, verbose_name='Время обновления')
     is_published = models.BooleanField(default=True, verbose_name='Публикация')
     category = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name='Категория')
+    likes = models.ManyToManyField(User, related_name='drone_like')
 
     def __str__(self):
         return self.title
@@ -40,6 +41,9 @@ class Drone(models.Model):
         if not self.slug.endswith('-' + str(self.id)):
             self.slug += '-' + str(self.id)
             super(Drone, self).save()
+
+    def count_of_likes(self):
+        return self.likes.count()
 
     class Meta:
         verbose_name = 'Дроны'

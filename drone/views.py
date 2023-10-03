@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.forms import inlineformset_factory
 from django.http import HttpResponseNotFound
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
@@ -71,6 +71,16 @@ class ShowPost(DataMixin, DetailView):
         comments = Comment.objects.filter(drone=context['post'], is_published=True)
         context['comments'] = comments
 
+        # Проверяем наличие лайка для юзера
+        likes_connected = get_object_or_404(Drone, slug=self.kwargs['drone_slug'])
+        liked = False
+        if likes_connected.likes.filter(id=self.request.user.id).exists():
+            liked = True
+
+        # Передаем лайки в шаблон
+        context['count_of_likes'] = likes_connected.count_of_likes()
+        context['post_is_liked'] = liked
+
         return dict(list(context.items()) + list(c_def.items()))
 
     def post(self, request, *args, **kwargs):
@@ -86,7 +96,6 @@ class ShowPost(DataMixin, DetailView):
             else:
                 return redirect('login')
         return self.render_to_response(self.get_context_data(form=form))
-
 
 class CreatePost(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddDroneForm
@@ -164,3 +173,12 @@ def pageNotFound(request, exception):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
+def DroneLike(request, slug):
+    drone = get_object_or_404(Drone, slug=slug)
+    if drone.likes.filter(id=request.user.id).exists():
+        drone.likes.remove(request.user)
+    else:
+        drone.likes.add(request.user)
+
+    # return redirect('drone')
