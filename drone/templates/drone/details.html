@@ -55,17 +55,18 @@
     {% csrf_token %}
 
     {% if post_is_liked %}
-    <button type="submit" name="drone_id" value="{{post.slug}}" class="btn btn-info">Больше не нравится</button>
+    <button type="submit" name="drone_id" value="{{post.slug}}" class="btn btn-info btn-sm">Больше не нравится</button>
     {% else %}
-    <button type="submit" name="drone_id" value="{{post.slug}}" class="btn btn-info">Нравится</button>
+    <button type="submit" name="drone_id" value="{{post.slug}}" class="btn btn-info btn-sm">Нравится</button>
     {% endif %}
   </form>
 {% else %}
-    <button type="submit" href="{% url 'login' %} class="btn btn-info">Больше не нравится</button>
+    <button type="submit" href="{% url 'login' %}" class="btn btn-info btn-sm">Больше не нравится</button>
 {% endif %}
 <strong class="text-secondary">Нравится: {{ count_of_likes }}</strong>
 <br><br>
 <!-- Форма создания комментария -->
+<h3>Комментарии</h3>
 {% if user.is_authenticated %}
     <form method="post">
       <div class="form-floating">

@@ -181,4 +181,4 @@ def DroneLike(request, slug):
     else:
         drone.likes.add(request.user)
 
-    # return redirect('drone')
+    return redirect(reverse('drone', kwargs={'drone_slug': slug}))
