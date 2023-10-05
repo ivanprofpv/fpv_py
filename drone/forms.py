@@ -125,3 +125,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['email', 'bio', 'avatar']
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'bio': TinyMCE(attrs={'class': 'form-control'}),
+            'avatar': forms.ClearableFileInput(attrs={'class': 'form-control'})}

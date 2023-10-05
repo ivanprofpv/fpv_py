@@ -2,24 +2,43 @@
 {% load static %}
 
 {% block title %}
-    профиль
+    Профиль
 {% endblock %}
 
 {% block content %}
-<img src="{{ profile_avatar }}" width="150" alt="Avatar">
- <h1>Личный кабинет</h1>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <img src="{{ profile_avatar }}" width="150" alt="Avatar">
+      <h1>Личный кабинет</h1>
 
-Здравствуйте, {{ user.username }}!
-<br>
-Ваш email: {{ user.email }}
-<br>
-О вас:
-{{ bio }}
-<br>
-Вы можете поменять свои данные в форме ниже:
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Сохранить</button>
-  </form>
+      <p>Здравствуйте, {{ user.username }}!</p>
+      <p>Ваш email: {{ user.email }}</p>
+      <p>О вас: {{ bio }}</p>
+    </div>
+    <div class="col-md-6">
+      <h2>Изменить данные</h2>
+      <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="id_username">Имя пользователя:</label>
+          {{ form.username }}
+        </div>
+        <div class="mb-3">
+          <label for="id_email">Email:</label>
+          {{ form.email }}
+        </div>
+        <div class="mb-3">
+          <label for="id_bio">О вас:</label>
+          {{ form.bio }}
+        </div>
+        <div class="mb-3">
+          <label for="id_avatar" class="form-label">Аватар</label>
+          {{ form.avatar }}
+        </div>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock %}
