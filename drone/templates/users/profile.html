@@ -1,0 +1,25 @@
+{% extends 'drone/layout.html' %}
+{% load static %}
+
+{% block title %}
+    профиль
+{% endblock %}
+
+{% block content %}
+<img src="{{ profile_avatar }}" width="150" alt="Avatar">
+ <h1>Личный кабинет</h1>
+
+Здравствуйте, {{ user.username }}!
+<br>
+Ваш email: {{ user.email }}
+<br>
+О вас:
+{{ bio }}
+<br>
+Вы можете поменять свои данные в форме ниже:
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+  </form>
+{% endblock %}

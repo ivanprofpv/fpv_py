@@ -28,7 +28,11 @@ class CommentCategoryAdmin(admin.ModelAdmin):
     search_fields = ('content',)
     list_editable = ('is_published',)
 
+class ProfileUserDetailAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user')
+
 admin.site.register(Drone, DroneAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(ComponentCategory, ComponentCategoryAdmin)
 admin.site.register(Comment, CommentCategoryAdmin)
+admin.site.register(Profile, ProfileUserDetailAdmin)

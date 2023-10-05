@@ -5,3 +5,6 @@ class DroneConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'drone'
     verbose_name = 'Модель Дроны'
+
+    def ready(self):
+        import drone.signals

@@ -43,7 +43,7 @@
             Аккаунт
               </a>
               <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Профиль</a></li>
+                <li><a class="dropdown-item" href="{% url 'profile' %}">Профиль</a></li>
                 {% if user.is_superuser %}
                   <li><a class="dropdown-item" href="/admin/">Админка</a></li>
                 {% endif %}

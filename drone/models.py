@@ -104,3 +104,12 @@ class Comment(models.Model):
         verbose_name = 'Комментарии'
         verbose_name_plural = 'Комментарии'
         ordering = ['created_on']
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField(blank=True)
+    avatar = models.ImageField(default='profile_images/default.jpg', upload_to='profile_images', verbose_name='Аватар', blank=True)
+    bio = models.TextField(max_length=255, blank=True, verbose_name='О себе')
+
+    def __str__(self):
+        return self.user.username

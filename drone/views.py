@@ -1,15 +1,17 @@
 from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.forms import inlineformset_factory
 from django.http import HttpResponseNotFound
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
 from .forms import AddDroneForm, SignUpUserForm, LoginUserForm, AddComponentCategoryForm, \
-    AddComponentForm, AddCommentForm
+    AddComponentForm, AddCommentForm, ProfileForm
 from .utils import *
+from .models import Profile
 
 import logging
 
@@ -182,3 +184,33 @@ def DroneLike(request, slug):
         drone.likes.add(request.user)
 
     return redirect(reverse('drone', kwargs={'drone_slug': slug}))
+
+@login_required(login_url='login')
+def profile(request):
+    profile = request.user.profile
+    user = request.user
+
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            # сохраняем данные из формы в профиле
+            profile.email = form.cleaned_data['email']
+            profile.bio = form.cleaned_data['bio']
+            profile.avatar = form.cleaned_data['avatar']
+            form.save()
+
+            # сохраняем email и для самого пользователя
+            user.email = profile.email
+            user.save()
+
+            return redirect('profile')
+    else:
+        form = ProfileForm(instance=profile)
+
+    context = {
+        'form': form,
+        'profile_avatar': profile.avatar.url,
+        'bio': profile.bio,
+    }
+
+    return render(request, 'users/profile.html', context=context)
