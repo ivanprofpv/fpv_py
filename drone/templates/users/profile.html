@@ -21,10 +21,6 @@
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="mb-3">
-          <label for="id_username">Имя пользователя:</label>
-          {{ form.username }}
-        </div>
-        <div class="mb-3">
           <label for="id_email">Email:</label>
           {{ form.email }}
         </div>
