@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.template.defaultfilters import slugify as django_slugify
 from django.urls import reverse
+from PIL import Image
 
 User=get_user_model()
 
@@ -16,7 +17,7 @@ def slugify(s):
     """
     return django_slugify(''.join(alphabet.get(w, w) for w in s.lower()))
 class Drone(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name='URL')
     content = models.TextField(blank=False, verbose_name='Текст статьи')
@@ -94,7 +95,7 @@ class Comment(models.Model):
     content = models.CharField(max_length=255, verbose_name='Комментарий')
     created_on = models.DateTimeField(auto_now_add=True)
     is_published = models.BooleanField(default=False, verbose_name='Публикация')
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
     drone = models.ForeignKey(Drone, on_delete=models.CASCADE, related_name='comments', null=True)
 
     def __str__(self):
@@ -113,3 +114,14 @@ class Profile(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    # ресайз аватарок
+    def save(self, *args, **kwargs):
+        super().save()
+
+        img = Image.open(self.avatar.path)
+
+        if img.height > 250 or img.width > 250:
+            new_img = (250, 250)
+            img.thumbnail(new_img)
+            img.save(self.avatar.path)

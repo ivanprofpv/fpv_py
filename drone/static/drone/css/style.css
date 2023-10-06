@@ -30,3 +30,17 @@ ul.errorlist {
 .content {
     margin-top: 20px;
 }
+
+.rounded-circle {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.rounded-circle_comment {
+   width: 60px;
+   height: 60px;
+   object-fit: cover;
+   border-radius: 50%;
+}

@@ -73,6 +73,11 @@ class ShowPost(DataMixin, DetailView):
         comments = Comment.objects.filter(drone=context['post'], is_published=True)
         context['comments'] = comments
 
+        # Получаем аватары комментаторов из их профилей (авторов комментариев)
+        for comment in comments:
+            user_avatar = Profile.objects.get(user=comment.author)
+        context['avatars'] = user_avatar.avatar.url
+
         # Проверяем наличие лайка для юзера
         likes_connected = get_object_or_404(Drone, slug=self.kwargs['drone_slug'])
         liked = False
@@ -119,7 +124,9 @@ class CreatePost(LoginRequiredMixin, DataMixin, CreateView):
     def form_valid(self, form):
         context = self.get_context_data()
         components = context['components']
-        self.object = form.save()  # Сохранение экземпляра Drone
+        self.object = form.save(commit=False)
+        self.object.author = self.request.user # Назначаем автора
+        self.object.save()  # Сохранение экземпляра Drone
 
         if components.is_valid():
             components.instance = self.object
@@ -189,6 +196,8 @@ def DroneLike(request, slug):
 def profile(request):
     profile = request.user.profile
     user = request.user
+    drone_count = Drone.objects.filter(author=user).count()
+    comment_count = Comment.objects.filter(author=user).count()
 
     if request.method == 'POST':
         form = ProfileForm(request.POST, request.FILES, instance=profile)
@@ -211,6 +220,8 @@ def profile(request):
         'form': form,
         'profile_avatar': profile.avatar.url,
         'bio': profile.bio,
+        'drone_count': drone_count,
+        'comment_count': comment_count,
     }
 
     return render(request, 'users/profile.html', context=context)
