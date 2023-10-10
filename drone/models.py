@@ -36,12 +36,11 @@ class Drone(models.Model):
         return reverse('drone', kwargs={'drone_slug': self.slug})
 
     #добавляем "-id" в конце url для уникальности
-    def save(self):
-        super(Drone, self).save()
+    def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         if not self.slug.endswith('-' + str(self.id)):
             self.slug += '-' + str(self.id)
-            super(Drone, self).save()
+        super().save(*args, **kwargs)
 
     def count_of_likes(self):
         return self.likes.count()
@@ -60,6 +59,11 @@ class Category(models.Model):
 
     def get_absolute_url(self):
         return reverse('category', kwargs={'category_slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Категории'

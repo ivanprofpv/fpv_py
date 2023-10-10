@@ -76,7 +76,7 @@ class ShowPost(DataMixin, DetailView):
         # Получаем аватары комментаторов из их профилей (авторов комментариев)
         for comment in comments:
             user_avatar = Profile.objects.get(user=comment.author)
-        context['avatars'] = user_avatar.avatar.url
+            context['avatars'] = user_avatar.avatar.url
 
         # Проверяем наличие лайка для юзера
         likes_connected = get_object_or_404(Drone, slug=self.kwargs['drone_slug'])
