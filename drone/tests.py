@@ -1,5 +1,8 @@
+from django.forms import inlineformset_factory
 from django.test import TestCase
 from .factories import *
+from .forms import AddComponentForm
+
 
 class DroneHomeTest(TestCase):
     @classmethod
@@ -35,3 +38,17 @@ class DroneHomeTest(TestCase):
         title = response.context['title']
         self.assertEqual(title, 'Главная страница')
 
+class CreatePostTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = UserFactory.create()
+
+    # GET-запрос, проверяем, что страница есть для авторизованного юзера
+    def test_get_context_data_auth_user(self):
+        self.client.force_login(self.user)
+        response = self.client.get(reverse('add_drone'))
+        self.assertEquals(response.status_code, 200)
+
+    def test_get_context_data_not_auth_user(self):
+        response = self.client.get(reverse('add_drone'))
+        self.assertEquals(response.status_code, 302)
