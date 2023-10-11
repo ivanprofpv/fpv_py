@@ -170,3 +170,7 @@ TINYMCE_DEFAULT_CONFIG = {
 #         },
 #     },
 # }
+
+TEST = {
+    'SERIALIZE': False,
+}

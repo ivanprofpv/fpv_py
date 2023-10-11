@@ -100,7 +100,7 @@ class Comment(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     is_published = models.BooleanField(default=False, verbose_name='Публикация')
     author = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
-    drone = models.ForeignKey(Drone, on_delete=models.CASCADE, related_name='comments', null=True)
+    drone = models.ForeignKey(Drone, on_delete=models.CASCADE, related_name='comments', null=False)
 
     def __str__(self):
         return 'Комментарий: {} от: {}, пост: {}'.format(self.content, self.author, self.drone)

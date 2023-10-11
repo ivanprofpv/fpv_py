@@ -30,5 +30,13 @@ class DroneFactory(factory.django.DjangoModelFactory):
     is_published = True
     category = factory.SubFactory(CategoryFactory)
 
+class CommentFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Comment
+
+    content = factory.Sequence(lambda n: f'Drone test comment{n}')
+    author = factory.SubFactory(UserFactory) # Связываем автора с юзером
+    drone = factory.SubFactory(DroneFactory) # Связываем коммент с дроном
+
 
 

@@ -1,7 +1,8 @@
-from django.forms import inlineformset_factory
 from django.test import TestCase
 from .factories import *
-from .forms import AddComponentForm
+import django
+
+django.setup()
 
 
 class DroneHomeTest(TestCase):
@@ -63,3 +64,24 @@ class CreatePostTest(TestCase):
         data = factory.build(dict, FACTORY_CLASS=DroneFactory)
         response = self.client.get(reverse('add_drone'), data=data)
         self.assertEqual(response.status_code, 200)
+
+class ShowPostTest(TestCase):
+    def setUp(self):
+        self.user = UserFactory.create()
+        self.drone = DroneFactory.create()
+        self.comment = CommentFactory.create(author=self.user, drone=self.drone, is_published=True)
+        self.url = reverse('drone', kwargs={'drone_slug': self.drone.slug})
+
+    def test_get_context_data(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'drone/details.html')
+        self.assertEqual(response.context['post'], self.drone)
+
+        # Проверяем, что передана форма комментариев
+        form = response.context['form']
+        self.assertIsNotNone(form)
+
+        # Проверяем, что на странице дрона есть комментарий
+        comments = response.context['comments']
+        self.assertIn(self.comment, comments)
