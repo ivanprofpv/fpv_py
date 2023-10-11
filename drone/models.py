@@ -38,8 +38,8 @@ class Drone(models.Model):
     #добавляем "-id" в конце url для уникальности
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        if not self.slug.endswith('-' + str(self.id)):
-            self.slug += '-' + str(self.id)
+        if not self.slug.endswith('-' + str(self.pk)):
+            self.slug += '-' + str(self.pk)
         super().save(*args, **kwargs)
 
     def count_of_likes(self):

@@ -13,7 +13,8 @@
         {% else %}
             <img class="featured-image" src="{% static 'drone/img/default.jpg' %}" alt="{{ title }}">
         {% endif %}
-        <div class="author">{{ post.author }}</div>
+        <br>
+        <div class="author">Автор: {{ post.author }}, категория: {{ post.category }}</div>
         <div class="content">{{ content | safe }}</div>
     <br>
     <h3>Компоненты</h3>

@@ -42,6 +42,7 @@ class CreatePostTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = UserFactory.create()
+        cls.category = CategoryFactory.create()
 
     # GET-запрос, проверяем, что страница есть для авторизованного юзера
     def test_get_context_data_auth_user(self):
@@ -52,3 +53,13 @@ class CreatePostTest(TestCase):
     def test_get_context_data_not_auth_user(self):
         response = self.client.get(reverse('add_drone'))
         self.assertEquals(response.status_code, 302)
+
+    def test_form_valid(self):
+        # Логинимся
+        self.client.force_login(self.user)
+
+        # Создание POST-запроса
+
+        data = factory.build(dict, FACTORY_CLASS=DroneFactory)
+        response = self.client.get(reverse('add_drone'), data=data)
+        self.assertEqual(response.status_code, 200)
